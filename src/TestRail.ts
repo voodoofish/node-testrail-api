@@ -520,9 +520,15 @@ class TestRail {
     return this._api('POST', `update_user/${userId}`, { json: payload });
   }
 
+  //download files
+
+  getXMLdata(suiteId: number, ftype: string): Promise<any> {
+    return this._api('GET', `suites/export/${suiteId}`,{fileType: ftype})
+  }
+
   // Internal
 
-  private async _api<T>(method: string, path: string, { query, json, form }: { query?: object; json?: object; form?: object } = {}): Promise<T> {
+  private async _api<T>(method: string, path: string, { query, json, form , fileType}: { query?: object; json?: object; form?: object, fileType?: string } = {}): Promise<T> {
     const headers: any = {};
     const url = this.baseURL + path + qs(query);
 
@@ -550,6 +556,10 @@ class TestRail {
           appendToFormData(body, key, value);
         }
       }
+    }
+
+    if(fileType) {
+      headers['Content-Type'] = 'text/xml;charset=UTF-8';
     }
 
     while (true) {
