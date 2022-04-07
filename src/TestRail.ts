@@ -80,9 +80,9 @@ class TestRail {
     return this._api('GET', `get_case/${caseId}`);
   }
 
-  getCases(projectId: number, filters?: Request.CaseFilters): Promise<Response.Case[]> {
+  getCases(projectId: number, suiteId: number, filters?: Request.CaseFilters): Promise<Response.Case[]> {
     return pagination('cases', filters, (filters) => {
-      return this._api('GET', `get_cases/${projectId}`, { query: filters });
+      return this._api('GET', `get_cases/${projectId}&suite_id=${suiteId}`, { query: filters });
     });
   }
 
